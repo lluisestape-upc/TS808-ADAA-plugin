@@ -1,0 +1,3 @@
+[submodule "jedla_ref"]
+	path = jedla_ref
+	url = https://github.com/jedlamartin/K_method_ADAA.git

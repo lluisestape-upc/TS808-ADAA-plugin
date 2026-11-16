@@ -1,0 +1,9 @@
+plugin/Builds/
+plugin/JuceLibraryCode/
+*.mat
+*.asv
+*.raw
+*.log
+*.net
+*.fft
+__pycache__/
