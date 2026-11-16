@@ -1,7 +1,7 @@
 # TS808 ADAA plugin
 
 Clipping stage of the Ibanez TS808 Tube Screamer, simulated with the K-method
-(state-space, trapezoidal rule) and first-order antiderivative antialiasing (ADAA1),
+(state-space) and first-order antiderivative antialiasing (ADAA1),
 implemented as a JUCE VST3 plugin. Part of my bachelor's thesis (TFG) at UPC.
 
 The model and the ADAA1 formulation follow Martin Jedla's
