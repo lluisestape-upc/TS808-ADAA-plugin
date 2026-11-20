@@ -26,10 +26,11 @@ Parameters: input gain, output gain and method:
   sample rate), with input compensation and averaging of the parallel path.
   F(p[n-1]) is cached, so there is one table lookup per sample.
 - **K x2 / K x4**: K-method with oversampling (`juce::dsp::Oversampling`,
-  polyphase IIR half-band filters). Work in progress: the latency is not yet
-  reported to the host.
+  polyphase IIR half-band filters, integer latency).
 
-Only the selected method is computed.
+Only the selected method is computed. The plugin reports its latency to the host
+and updates it when the method changes: 0 samples for K-method and ADAA1, 4 for
+K x2 and 6 for K x4.
 
 Build: open `plugin/TS808ADAA.jucer` in Projucer (modules include `juce_dsp`),
 export to Visual Studio 2022 and build the VST3 target in Release.
@@ -42,8 +43,8 @@ export to Visual Studio 2022 and build the VST3 target in Release.
 2. `model/run_plugin.py`: loads the Release VST3 with
    [pedalboard](https://github.com/spotify/pedalboard), processes the same input
    with each method and saves `plugin_out_amp<amp>.mat`.
-3. `model/compare_plugin.m`: compares the plugin with MATLAB sample by sample
-   and computes the metrics in `alias_metrics.m`.
+3. `model/compare_plugin.m`: compares K-method and ADAA1 with MATLAB sample by
+   sample, and computes the metrics in `alias_metrics.m` for all four methods.
 
 `alias_metrics.m`: Hann window, FFT zero-padded to 10N, the bins within ±5 Hz of
 each harmonic are set to zero, and the remaining power is summed over 0 to fs/2
