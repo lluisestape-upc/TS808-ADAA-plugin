@@ -1,4 +1,4 @@
-amp = "0.0981";
+amp = "0.9798";
 ref = load("plugin_ref_amp" + amp + ".mat");
 out = load("plugin_out_amp" + amp + ".mat");
 
@@ -6,6 +6,8 @@ uki_K = ref.uki_k;
 uki_comp = ref.uki_comp;
 
 yK = double(out.yK);
+yK2 = double(out.yK2);
+yK4 = double(out.yK4);
 yA = double(out.yA);
 
 eK = yK(1:end-1) - uki_K(2:end);                        
@@ -67,13 +69,25 @@ freq = 1073;
 
 [aFull_mK, a20k_mK, H1_mK] = alias_metrics(uki_K, fs, freq);
 [aFull_pK, a20k_pK, H1_pK] = alias_metrics(yK, fs, freq);
+[aFull_pK2, a20k_pK2, H1_pK2] = alias_metrics(yK2, fs, freq);
+[aFull_pK4, a20k_pK4, H1_pK4] = alias_metrics(yK4, fs, freq);
 [aFull_mA, a20k_mA, H1_mA] = alias_metrics(uki_comp, fs, freq);
 [aFull_pA, a20k_pA, H1_pA] = alias_metrics(yA, fs, freq);
+
+[c, lags] = xcorr(yK2, yK);
+[~, imax] = max(c);
+lags(imax) 
+
+[c, lags] = xcorr(yK4, yK);
+[~, imax] = max(c);
+lags(imax) 
 
 fprintf("\namp = %s\t| alias full \t| alias 20k \t| H1\n", amp);
 
 fprintf("K MATLAB  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_mK, a20k_mK, H1_mK);
 fprintf("K Plugin  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_pK, a20k_pK, H1_pK);
+fprintf("K 2x Plugin  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_pK2, a20k_pK2, H1_pK2);
+fprintf("K 4x Plugin  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_pK4, a20k_pK4, H1_pK4);
 fprintf("ADAA1 MATLAB  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_mA, a20k_mA, H1_mA);
 fprintf("ADAA1 Plugin  \t| %8.2f \t| %8.2f \t| %.4f V\n", aFull_pA, a20k_pA, H1_pA);
 

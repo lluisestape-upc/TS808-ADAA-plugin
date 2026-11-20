@@ -289,6 +289,10 @@ void TS808ADAAAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
     os4.initProcessing(samplesPerBlock);
     os4.reset();
 
+	const int method = juce::roundToInt(apvts.getRawParameterValue("method")->load());
+	updateLatency(method);
+    lastMethod = method;
+
     for (int ch = 0; ch < 2; ++ch) {
 		stateK[ch] = ChannelState();
 		stateK2[ch] = ChannelState();
@@ -334,6 +338,32 @@ bool TS808ADAAAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 }
 #endif
 
+void TS808ADAAAudioProcessor::updateLatency(int method)
+{
+    float lat = 0.0;
+    switch (method)
+    {
+	case 0:
+		lat = 0.0;
+		break;
+	case 1:
+		lat = 0.0;
+		break;
+	case 2:
+		lat = (float)os2.getLatencyInSamples();
+        break;
+	case 3:
+        lat = (float)os4.getLatencyInSamples();
+		break;
+    default:
+        break;
+    }
+
+	setLatencySamples(juce::roundToInt(lat));
+
+    DBG("method = " << method << " | latencia = " << lat << " muestras");
+}
+
 void TS808ADAAAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -341,7 +371,11 @@ void TS808ADAAAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     const int method = juce::roundToInt(apvts.getRawParameterValue("method")->load());
-
+    
+    if (method != lastMethod) {
+        updateLatency(method);
+        lastMethod = method;
+    }
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -401,7 +435,6 @@ void TS808ADAAAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
         auto& os = isx4 ? os4 : os2;
         auto& m = isx4 ? modelK4 : modelK2;
 		auto* s = isx4 ? stateK4 : stateK2;
-
         juce::dsp::AudioBlock<float> block(buffer);
         auto up = os.processSamplesUp(block);
 
@@ -418,7 +451,6 @@ void TS808ADAAAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
         os.processSamplesDown(block);
 
     }
-
 }
 
 //==============================================================================

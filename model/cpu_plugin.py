@@ -35,14 +35,19 @@ def medir(metodo, bypass, repeticiones=20):
     return tiempos
 
 tK = medir("K-method", False)
-print(f"K-method : {min(tK)/len(u20)*1e9:6.1f} ns/muestra | CPU {min(tK)/dur*100:.3f} % | mediana {np.median(tK)/len(u20)*1e9:6.1f} ns")
+print(f"K-method : {min(tK)/len(u20)*1e9:6.1f} ns/muestra \t| CPU {min(tK)/dur*100:.3f} % \t| mediana {np.median(tK)/len(u20)*1e9:6.1f} ns")
 
 tB = medir("K-method", True)
-print(f"Bypass : {min(tB)/len(u20)*1e9:6.1f} ns/muestra | CPU {min(tB)/dur*100:.3f} % | mediana {np.median(tB)/len(u20)*1e9:6.1f} ns")
+print(f"Bypass : {min(tB)/len(u20)*1e9:6.1f} ns/muestra \t| CPU {min(tB)/dur*100:.3f} % \t| mediana {np.median(tB)/len(u20)*1e9:6.1f} ns")
+
+tK2 = medir("K x2", False)
+print(f"K x2 : {min(tK2)/len(u20)*1e9:6.1f} ns/muestra \t| CPU {min(tK2)/dur*100:.3f} % \t| mediana {np.median(tK2)/len(u20)*1e9:6.1f} ns")
+
+tK4 = medir("K x4", False)
+print(f"K x4 : {min(tK4)/len(u20)*1e9:6.1f} ns/muestra \t| CPU {min(tK4)/dur*100:.3f} % \t| mediana {np.median(tK4)/len(u20)*1e9:6.1f} ns")
 
 tA = medir("ADAA1", False)
-print(f"ADAA1 : {min(tA)/len(u20)*1e9:6.1f} ns/muestra | CPU {min(tA)/dur*100:.3f} % | mediana {np.median(tA)/len(u20)*1e9:6.1f} ns")
-
+print(f"ADAA1 : {min(tA)/len(u20)*1e9:6.1f} ns/muestra \t| CPU {min(tA)/dur*100:.3f} % \t| mediana {np.median(tA)/len(u20)*1e9:6.1f} ns")
 
 
     

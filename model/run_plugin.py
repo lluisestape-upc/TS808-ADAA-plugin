@@ -29,5 +29,5 @@ for amp in ["0.0981", "0.9798"]:
     plugin.method = "ADAA1"
     yA = plugin.process(u, sample_rate=fs, reset=True)                      # Process the input signal using the ADAA1 method
 
-    scipy.io.savemat(f"plugin_out_amp{amp}.mat", {"yK": yK, "yA": yA})      # Save the processed output for the current amplitude
-    print(amp, "ok", yK.shape, yA.shape)                                    # Print the amplitude, status, and shapes of the processed outputs
+    scipy.io.savemat(f"plugin_out_amp{amp}.mat", {"yK": yK, "yA": yA, "yK2": yK2, "yK4": yK4})      # Save the processed output for the current amplitude
+    print(amp, "ok", yK.shape, yA.shape, yK2.shape, yK4.shape)                                    # Print the amplitude, status, and shapes of the processed outputs

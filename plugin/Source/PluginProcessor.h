@@ -108,6 +108,8 @@ private:
 	static constexpr int numPoints = 10001;
 
 	std::vector<double> xTab, yTab;
+
+    int lastMethod = -1;
     
     //==============================================================================
 	// prepareToPlay variables
@@ -128,9 +130,10 @@ private:
 
     // Oversampling
     
-    juce::dsp::Oversampling<float> os2{ 2, 1, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR, true };
-    juce::dsp::Oversampling<float> os4{ 2, 2, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR, true };
+    juce::dsp::Oversampling<float> os2{ 2, 1, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR, true, true };
+    juce::dsp::Oversampling<float> os4{ 2, 2, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR, true, true };
 
+    void updateLatency(int method);
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TS808ADAAAudioProcessor)   
 
